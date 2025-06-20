@@ -21,9 +21,10 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(navController: NavController) {
     var field1 by remember { mutableStateOf("") }
     var field2 by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -155,7 +156,7 @@ fun LoginScreen() {
 
             // Login Button
             Button(
-                onClick = { /* Handle login action */ },
+                onClick = { navController.navigate("home") },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Black,
                     contentColor = Color.White
