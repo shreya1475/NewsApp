@@ -39,12 +39,12 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.ui.Alignment
-
+import androidx.navigation.NavController
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavController) {
     val posts = (23 downTo 1).map { "Post $it" }
 
     Column(
@@ -63,7 +63,7 @@ fun HomeScreen() {
                 IconButton(onClick = { }) {
                     Icon(Icons.Default.Notifications, contentDescription = "Notifications")
                 }
-                IconButton(onClick = { }) {
+                IconButton(onClick = { navController.navigate("profile")}) {
                     Icon(Icons.Default.Person, contentDescription = "Profile")
                 }
             },
@@ -201,6 +201,7 @@ fun HomeScreen() {
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 6.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color.Black),
                         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 6.dp),
                         shape = RoundedCornerShape(12.dp)
                     ) {
@@ -209,7 +210,7 @@ fun HomeScreen() {
                             modifier = Modifier
                                 .padding(16.dp),
                             fontSize = 16.sp,
-                            color = Color.Black
+                            color = Color.White
                         )
                     }
                 }
@@ -240,7 +241,7 @@ fun PostRow(startIndex: Int) {
                         .fillMaxSize()
                         .background(Color.White)
                 ) {
-                    Text("Post ${startIndex + i + 1}", color = Color.Black)
+                    Text("#Post ${startIndex + i + 1}", color = Color.Black)
                 }
             }
         }

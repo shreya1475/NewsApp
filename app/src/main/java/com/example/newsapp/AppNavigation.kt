@@ -17,6 +17,7 @@ fun AppNavigation() {
             })
         }
         composable("login") { LoginScreen(navController) }
-        composable("home") { HomeScreen() }
+        composable("home") { HomeScreen(navController) }
+        composable("profile") { ProfileScreen() }
     }
 }
