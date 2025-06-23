@@ -40,6 +40,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.ui.Alignment
 import androidx.navigation.NavController
+import android.net.Uri
+import java.net.URLDecoder
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.runtime.*
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.ui.unit.DpOffset
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -47,203 +56,281 @@ import androidx.navigation.NavController
 fun HomeScreen(navController: NavController) {
     val posts = (23 downTo 1).map { "Post $it" }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFF282828)) // light gray background
-    ) {
-        TopAppBar(
-            title = {
-                Text("NewsApp", fontWeight = FontWeight.Bold)
-            },
-            actions = {
-                IconButton(onClick = { }) {
-                    Icon(Icons.Default.Search, contentDescription = "Search")
-                }
-                IconButton(onClick = { }) {
-                    Icon(Icons.Default.Notifications, contentDescription = "Notifications")
-                }
-                IconButton(onClick = { navController.navigate("profile")}) {
-                    Icon(Icons.Default.Person, contentDescription = "Profile")
-                }
-            },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = Color.Black,
-                titleContentColor = Color.White,
-                actionIconContentColor = Color.White
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(0xFF282828)) // light gray background
+        ) {
+            TopAppBar(
+                title = {
+                    Text("NewsApp", fontWeight = FontWeight.Bold)
+                },
+                actions = {
+                    IconButton(onClick = { }) {
+                        Icon(Icons.Default.Search, contentDescription = "Search")
+                    }
+                    IconButton(onClick = { }) {
+                        Icon(Icons.Default.Notifications, contentDescription = "Notifications")
+                    }
+                    IconButton(onClick = { navController.navigate("profile")}) {
+                        Icon(Icons.Default.Person, contentDescription = "Profile")
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.Black,
+                    titleContentColor = Color.White,
+                    actionIconContentColor = Color.White
+                )
             )
-        )
 
-
-        Spacer(modifier = Modifier.height(2.dp))
-
-        Column(modifier = Modifier.fillMaxWidth()) {
-
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(color = Color.Black)
-                    .padding(vertical = 16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Column(
-                    modifier = Modifier.weight(1f),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text("Published Today", color = Color.White, fontWeight = FontWeight.Bold)
-                    Text("5", color = Color(0xFF087DC5), fontWeight = FontWeight.Bold, fontSize = 20.sp)
-                }
-
-                Column(
-                    modifier = Modifier.weight(1f),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text("Total Posts", color = Color.White, fontWeight = FontWeight.Bold)
-                    Text("100", color = Color(0xFF087DC5), fontWeight = FontWeight.Bold, fontSize = 20.sp)
-                }
-
-                Column(
-                    modifier = Modifier.weight(1f),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text("Total Drafts", color = Color.White, fontWeight = FontWeight.Bold)
-                    Text("5", color = Color(0xFF087DC5), fontWeight = FontWeight.Bold, fontSize = 20.sp)
-                }
-            }
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(color = Color.Black)
-                    .padding(vertical = 16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Column(
-                    modifier = Modifier.weight(1f),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text("Pending", color = Color.White, fontWeight = FontWeight.Bold)
-                    Text("5", color = Color(0xFF087DC5), fontWeight = FontWeight.Bold, fontSize = 20.sp)
-                }
-
-                Column(
-                    modifier = Modifier.weight(1f),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text("New Comments", color = Color.White, fontWeight = FontWeight.Bold)
-                    Text("100", color = Color(0xFF087DC5), fontWeight = FontWeight.Bold, fontSize = 20.sp)
-                }
-
-                Column(
-                    modifier = Modifier.weight(1f),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text("Spam", color = Color.White, fontWeight = FontWeight.Bold)
-                    Text("5", color = Color(0xFF087DC5), fontWeight = FontWeight.Bold, fontSize = 20.sp)
-                }
-            }
-
-            Spacer(modifier = Modifier.height(10.dp))
-
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp)
-            ) {
-                Button(
-                    onClick = { },
-                    shape = RoundedCornerShape(26.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Black,
-                        contentColor = Color.White
-                    ),
-                    border = BorderStroke(1.dp, Color.White),
-                    modifier = Modifier
-                        .weight(1.1f)
-                        .padding(end = 8.dp)
-                ) {
-                    Text("Analytics")
-                }
-                Button(
-                    onClick = { },
-                    shape = RoundedCornerShape(26.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Black,
-                        contentColor = Color.White
-                    ),
-                    border = BorderStroke(1.dp, Color.White),
-                    modifier = Modifier
-                        .weight(1.1f)
-                        .padding(end = 8.dp)
-                ) {
-                    Text("Manage")
-                }
-            }
 
             Spacer(modifier = Modifier.height(2.dp))
 
+            Column(modifier = Modifier.fillMaxWidth()) {
 
 
-            Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
-            LazyColumn(
-                modifier = Modifier.fillMaxHeight(),
-                contentPadding = PaddingValues(bottom = 80.dp)
-            ) {
-                items(posts) { post ->
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 6.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color.Black),
-                        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 6.dp),
-                        shape = RoundedCornerShape(12.dp)
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(color = Color.Black)
+                        .padding(vertical = 16.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Column(
+                        modifier = Modifier.weight(1f),
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(
-                            text = post,
+                        Text("Published Today", color = Color.White, fontWeight = FontWeight.Bold)
+                        Text("5", color = Color(0xFF087DC5), fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                    }
+
+                    Column(
+                        modifier = Modifier.weight(1f),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text("Total Posts", color = Color.White, fontWeight = FontWeight.Bold)
+                        Text("100", color = Color(0xFF087DC5), fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                    }
+
+                    Column(
+                        modifier = Modifier.weight(1f),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text("Total Drafts", color = Color.White, fontWeight = FontWeight.Bold)
+                        Text("5", color = Color(0xFF087DC5), fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(color = Color.Black)
+                        .padding(vertical = 16.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Column(
+                        modifier = Modifier.weight(1f),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text("Pending", color = Color.White, fontWeight = FontWeight.Bold)
+                        Text("5", color = Color(0xFF087DC5), fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                    }
+
+                    Column(
+                        modifier = Modifier.weight(1f),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text("New Comments", color = Color.White, fontWeight = FontWeight.Bold)
+                        Text("100", color = Color(0xFF087DC5), fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                    }
+
+                    Column(
+                        modifier = Modifier.weight(1f),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text("Spam", color = Color.White, fontWeight = FontWeight.Bold)
+                        Text("5", color = Color(0xFF087DC5), fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Row(
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp)
+                ) {
+                    Button(
+                        onClick = { },
+                        shape = RoundedCornerShape(26.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Black,
+                            contentColor = Color.White
+                        ),
+                        border = BorderStroke(1.dp, Color.White),
+                        modifier = Modifier
+                            .weight(1.1f)
+                            .padding(end = 8.dp)
+                    ) {
+                        Text("Analytics")
+                    }
+                    Button(
+                        onClick = { },
+                        shape = RoundedCornerShape(26.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Black,
+                            contentColor = Color.White
+                        ),
+                        border = BorderStroke(1.dp, Color.White),
+                        modifier = Modifier
+                            .weight(1.1f)
+                            .padding(end = 8.dp)
+                    ) {
+                        Text("Manage")
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(2.dp))
+
+
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                LazyColumn(
+                    modifier = Modifier.fillMaxHeight(),
+                    contentPadding = PaddingValues(bottom = 80.dp)
+                ) {
+                    items(posts) { post ->
+                        Card(
+                            onClick = {
+                                val encodedTitle = Uri.encode(post)
+                                navController.navigate("postDetail/$encodedTitle")
+                            },
                             modifier = Modifier
-                                .padding(16.dp),
-                            fontSize = 16.sp,
-                            color = Color.White
-                        )
+                                .fillMaxWidth()
+                                .padding(vertical = 6.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color.Black),
+                            elevation = CardDefaults.elevatedCardElevation(defaultElevation = 6.dp),
+                            shape = RoundedCornerShape(12.dp)
+                        ) {
+                            Text(
+                                text = post,
+                                modifier = Modifier.padding(16.dp),
+                                fontSize = 16.sp,
+                                color = Color.White
+                            )
+                        }
+                    }
+                }
+            }
+        }
+        var expanded by remember { mutableStateOf(false) }
+
+        Column(
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(16.dp),
+            horizontalAlignment = Alignment.End
+        ) {
+            AnimatedVisibility(visible = expanded) {
+                Column {
+                    Button(
+                        onClick = { /* action for 1 */ },
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    ) {
+                        Text("New Post")
+                    }
+                    Button(
+                        onClick = { /* action for 2 */ },
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    ) {
+                        Text("Option 2")
+                    }
+                    Button(
+                        onClick = { /* action for 3 */ },
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    ) {
+                        Text("Option 3")
+                    }
+                }
+            }
+
+            FloatingActionButton(
+                onClick = { expanded = !expanded },
+                containerColor = Color(0xFF087DC5),
+                contentColor = Color.White,
+                elevation = FloatingActionButtonDefaults.elevation(8.dp)
+            ) {
+                Icon(Icons.Default.Add, contentDescription = "Add")
+            }
+        }
+
+    }
+
+    @Composable
+    fun PostRow(startIndex: Int) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            for (i in 0..2) {
+                Card(
+                    modifier = Modifier
+                        .width(100.dp)
+                        .height(100.dp),
+                    elevation = CardDefaults.elevatedCardElevation(defaultElevation = 6.dp),
+                    shape = RoundedCornerShape(10.dp)
+                ) {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Color.White)
+                    ) {
+                        Text("#Post ${startIndex + i + 1}", color = Color.Black)
                     }
                 }
             }
         }
     }
+
+
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PostRow(startIndex: Int) {
-    Row(
+fun PostDetailScreen(title: String) {
+    val decodedTitle = URLDecoder.decode(title, "UTF-8")
+    Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
+            .fillMaxSize()
+            .background(Color(0xFF121212))
+//            .padding(16.dp)
     ) {
-        for (i in 0..2) {
-            Card(
-                modifier = Modifier
-                    .width(100.dp)
-                    .height(100.dp),
-                elevation = CardDefaults.elevatedCardElevation(defaultElevation = 6.dp),
-                shape = RoundedCornerShape(10.dp)
-            ) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.White)
-                ) {
-                    Text("#Post ${startIndex + i + 1}", color = Color.Black)
-                }
-            }
-        }
+        TopAppBar(
+            title = {
+                Text("NewsApp", fontWeight = FontWeight.Bold)
+            },
+
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = Color.Black,
+                titleContentColor = Color.White,
+            )
+        )
+        Text(text = decodedTitle, color = Color.White, fontSize = 24.sp, fontWeight = FontWeight.Bold)
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = "This is the full content of \"$decodedTitle\". You can replace this with actual post content.",
+            color = Color.White,
+            fontSize = 16.sp
+        )
     }
 }
