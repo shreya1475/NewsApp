@@ -1,10 +1,27 @@
 package com.example.newsapp
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,161 +31,108 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
-
 
 @Composable
-fun ProfileScreen(
-    adminName: String = "ADMIN NAME",
-    adminEmail: String = "admin123@gmail.com",
-    siteUrl: String = "https://WordpressSite.com/",
-    onEditProfile: () -> Unit = {},
-    onReAuth: () -> Unit = {},
-    onNotificationSettings: () -> Unit = {},
-    onNewsletterSettings: () -> Unit = {},
-    onAppPreferences: () -> Unit = {},
-    onLogout: () -> Unit = {}
-) {
+fun ProfileScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black)
-            .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .background(Color.White)
+            .background(color = Color.Black),
+        horizontalAlignment = Alignment.CenterHorizontally,
+
     ) {
-        Text(
-            text = "Profile",
-            color = Color.White,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold
-        )
 
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Profile Image
-        Box(
-            modifier = Modifier
-                .size(80.dp)
-                .clip(CircleShape)
-                .background(Color.Gray)
+        // Top Row: Profile Picture + Name, Email, Edit Button
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(top = 78.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            // Placeholder for profile image
-            Icon(
-                painter = painterResource(id = R.drawable.user),
-                contentDescription = "Profile",
-                tint = Color.White,
+            Image(
+                painter = painterResource(id = R.drawable.user), // Replace with actual image
+                contentDescription = "Profile Picture",
                 modifier = Modifier
-                    .size(40.dp)
-                    .align(Alignment.Center)
+                    .size(140.dp)
+                    .clip(CircleShape)
+                    .background(Color.Black)
+                    .padding(20.dp)
             )
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Column(modifier = Modifier.weight(1f)) {
+                Text("Shreya Shinde", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                Text("shreya@example.com", fontSize = 14.sp, color = Color.Gray)
+
+                Button(onClick = { /* TODO: Edit profile */ },
+//                    border = BorderStroke(2.dp, Color.White),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF383838)),
+                    shape = RoundedCornerShape(16.dp)
+                ) {
+                    Text("Edit Profile")
+                }
+            }
+
+
+
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(36.dp))
 
+
+
+        // Site URL
         Text(
-            text = adminName,
+            text = "Site URL:www.shreyashinde.com",
+            fontSize = 14.sp,
             color = Color.White,
-            fontSize = 16.sp,
+            modifier = Modifier.padding(start = 8.dp),
             fontWeight = FontWeight.Bold
         )
 
-        Text(
-            text = adminEmail,
-            color = Color.White.copy(alpha = 0.7f),
-            fontSize = 14.sp
-        )
+        Spacer(modifier = Modifier.height(64.dp))
 
-        Spacer(modifier = Modifier.height(8.dp))
+        // Settings Buttons
+        ProfileSettingItem(title = "Notification Settings")
+        ProfileSettingItem(title = "Newsletter Settings")
+        ProfileSettingItem(title = "App Preferences")
 
+        Spacer(modifier = Modifier.weight(1f))
+
+        // Logout Button
         Button(
-            onClick = onEditProfile,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color.White,
-                contentColor = Color.Black
-            ),
-            shape = RoundedCornerShape(6.dp),
-            modifier = Modifier
-                .height(36.dp)
-                .width(120.dp)
-        ) {
-            Text("Edit profile", fontSize = 14.sp, fontWeight = FontWeight.Bold)
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(
-            text = "Site URL : $siteUrl",
-            color = Color.White,
-            fontSize = 14.sp
-        )
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        Button(
-            onClick = onReAuth,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF4CAF50),
-                contentColor = Color.White
-            ),
-            shape = RoundedCornerShape(6.dp),
-            modifier = Modifier
-                .height(40.dp)
-                .width(220.dp)
-        ) {
-            Text("Re-Authenticate API", fontWeight = FontWeight.Bold)
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        ProfileMenuItem("Notification Settings", onClick = onNotificationSettings)
-        ProfileMenuItem("Newsletter Settings", onClick = onNewsletterSettings)
-        ProfileMenuItem("App Preferences", onClick = onAppPreferences)
-
-        Spacer(modifier = Modifier.height(32.dp))
-
-        Button(
-            onClick = onLogout,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Red,
-                contentColor = Color.White
-            ),
-            shape = RoundedCornerShape(6.dp),
+            onClick = { /* TODO: Logout */ },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(48.dp)
+                .padding(vertical = 16.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
         ) {
-            Text("Log Out", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+            Text("Logout", color = Color.White)
         }
     }
 }
 
 @Composable
-fun ProfileMenuItem(title: String, onClick: () -> Unit) {
-    Button(
-        onClick = onClick,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color.DarkGray,
-            contentColor = Color.White
-        ),
-        shape = RoundedCornerShape(6.dp),
+fun ProfileSettingItem(title: String) {
+    Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(50.dp)
-            .padding(vertical = 6.dp)
+            .clickable { /* TODO: Navigate to settings */ }
+            .padding(vertical = 12.dp, horizontal = 28.dp)
+            .background(Color(0xFF1F1F1F))
+            .height(42.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(title, fontWeight = FontWeight.Bold, fontSize = 16.sp)
-            Icon(
-                imageVector = Icons.Default.ArrowForward,
-                contentDescription = null,
-                tint = Color.White
-            )
-
-        }
+        Text(
+            text = title,
+            fontSize = 16.sp,
+            modifier = Modifier.weight(1f).padding(horizontal = 12.dp),
+            color = Color.White
+        )
+        Icon(
+            imageVector = Icons.Default.KeyboardArrowRight,
+            contentDescription = "Arrow",
+            tint = Color.White
+        )
     }
 }
