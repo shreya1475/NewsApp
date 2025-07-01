@@ -1,25 +1,28 @@
 package com.example.newsapp
 
+import android.text.Html
 import androidx.compose.foundation.background
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.res.painterResource
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Person
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-
+import coil.compose.rememberAsyncImagePainter
+import com.example.newsapp.model.WordPressPost
+import com.example.newsapp.viewmodel.PostsViewModel
 
 @Composable
 fun DashboardScreen(
@@ -29,11 +32,13 @@ fun DashboardScreen(
     pending: Int = 11,
     newComments: Int = 201,
     spam: Int = 25,
-    posts: List<Post> = dummyPosts(),
     navController: NavHostController,
     onAnalyticsClick: () -> Unit = {},
-    onManageClick: () -> Unit = {}
+    onManageClick: () -> Unit = {},
+    viewModel: PostsViewModel = viewModel()
 ) {
+    val posts by viewModel.posts.collectAsState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -106,7 +111,7 @@ fun DashboardScreen(
 
         LazyColumn {
             items(posts) { post ->
-                PostItem(post)
+                WordPressPostItem(post)
             }
         }
     }
@@ -160,7 +165,18 @@ fun MetricItem(label: String, value: String) {
 }
 
 @Composable
-fun PostItem(post: Post) {
+fun WordPressPostItem(post: WordPressPost, viewModel: PostsViewModel = viewModel()) {
+    var authorName by remember { mutableStateOf("Loading...") }
+    var imageUrl by remember { mutableStateOf<String?>(null) }
+
+    LaunchedEffect(post.author) {
+        authorName = viewModel.getAuthorName(post.author)
+    }
+
+    LaunchedEffect(post.featured_media) {
+        imageUrl = viewModel.getFeaturedImageUrl(post.featured_media)
+    }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -168,35 +184,39 @@ fun PostItem(post: Post) {
             .padding(12.dp)
             .padding(vertical = 8.dp)
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                text = "POST #${post.id}",
-                color = Color.White,
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
-            )
-            Text(
-                text = post.date,
-                color = Color.White.copy(alpha = 0.7f),
-                fontSize = 12.sp
+        Text(
+            text = Html.fromHtml(post.title.rendered, Html.FROM_HTML_MODE_LEGACY).toString(),
+            color = Color.White,
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp
+        )
+        Text(
+            text = "By $authorName on ${post.date.take(10)}",
+            color = Color.Gray,
+            fontSize = 12.sp
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        if (imageUrl != null) {
+            Image(
+                painter = rememberAsyncImagePainter(model = imageUrl),
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(180.dp)
             )
         }
+
         Spacer(modifier = Modifier.height(8.dp))
+
         Text(
-            text = post.description,
+            text = Html.fromHtml(post.excerpt.rendered, Html.FROM_HTML_MODE_LEGACY).toString(),
             color = Color.White,
-            fontSize = 14.sp
+            fontSize = 14.sp,
+            maxLines = 3
         )
     }
 }
 
-data class Post(val id: Int, val description: String, val date: String)
 
-fun dummyPosts(): List<Post> = listOf(
-    Post(23, "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", "13/04/2025"),
-    Post(22, "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.", "13/04/2025"),
-    Post(21, "It has survived not only five centuries, but also the leap into electronic typesetting.", "13/04/2025")
-)
