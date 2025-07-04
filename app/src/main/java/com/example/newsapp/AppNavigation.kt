@@ -33,25 +33,33 @@ fun AppNavigation() {
         composable("dashboard") {
             DashboardScreen(
                 navController = navController,
-                onAnalyticsClick = { /* ... */ },
+                onAnalyticsClick = { navController.navigate("analytics") },
                 onManageClick = { /* ... */ }
             )
         }
 
-
-        composable("profile") {
-            ProfileScreen(
-                onEditProfile = { /* TODO: Navigate to Edit Profile screen if implemented */ },
-                onReAuth = { /* TODO: Handle re-authentication */ },
-                onNotificationSettings = { /* TODO: Navigate to Notification Settings */ },
-                onNewsletterSettings = { /* TODO: Navigate to Newsletter Settings */ },
-                onAppPreferences = { /* TODO: Navigate to App Preferences */ },
-                onLogout = {
-                    navController.navigate("welcome") {
-                        popUpTo("welcome") { inclusive = true }
-                    }
-                }
+        composable("analytics") {
+            AnalyticsScreen(
+                navController = navController,
+                onAnalyticsClick = { /* maybe reload data or nothing */ },
+                onManageClick = { /* optional */ }
             )
         }
+
+
+//        composable("profile") {
+//            ProfileScreen(
+//                onEditProfile = { /* TODO: Navigate to Edit Profile screen if implemented */ },
+//                onReAuth = { /* TODO: Handle re-authentication */ },
+//                onNotificationSettings = { /* TODO: Navigate to Notification Settings */ },
+//                onNewsletterSettings = { /* TODO: Navigate to Newsletter Settings */ },
+//                onAppPreferences = { /* TODO: Navigate to App Preferences */ },
+//                onLogout = {
+//                    navController.navigate("welcome") {
+//                        popUpTo("welcome") { inclusive = true }
+//                    }
+//                }
+//            )
+//        }
     }
 }
