@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.newsapp.screen.AnalyticsScreen
 import com.example.newsapp.screen.DashboardScreen
 import com.example.newsapp.screen.LoginScreen
+import com.example.newsapp.screen.PostEditorScreen
 import com.example.newsapp.screen.WelcomeScreen
 
 @Composable
@@ -38,7 +39,8 @@ fun AppNavigation() {
             DashboardScreen(
                 navController = navController,
                 onAnalyticsClick = { navController.navigate("analytics") },
-                onManageClick = { /* ... */ }
+                onManageClick = { /* ... */ },
+                onFabClick = { navController.navigate("editor") }
             )
         }
 
@@ -48,6 +50,9 @@ fun AppNavigation() {
                 onAnalyticsClick = { /* maybe reload data or nothing */ },
                 onManageClick = { /* optional */ }
             )
+        }
+        composable("editor") {
+            PostEditorScreen()
         }
 
 
