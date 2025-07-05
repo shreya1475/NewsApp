@@ -1,4 +1,4 @@
-package com.example.newsapp
+package com.example.newsapp.screen
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -14,7 +14,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation

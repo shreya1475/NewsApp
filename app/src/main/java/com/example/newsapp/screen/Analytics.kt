@@ -1,4 +1,4 @@
-package com.example.newsapp
+package com.example.newsapp.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
+import com.example.newsapp.R
 
 
 @Composable

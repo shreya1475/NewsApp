@@ -1,8 +1,7 @@
-package com.example.newsapp
+package com.example.newsapp.screen
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -47,8 +46,6 @@ import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.ui.unit.DpOffset
-
 
 
 @OptIn(ExperimentalMaterial3Api::class)

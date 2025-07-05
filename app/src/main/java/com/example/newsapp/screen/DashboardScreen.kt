@@ -1,4 +1,4 @@
-package com.example.newsapp
+package com.example.newsapp.screen
 
 import android.text.Html
 import androidx.compose.foundation.background
@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
@@ -35,86 +36,109 @@ fun DashboardScreen(
     navController: NavHostController,
     onAnalyticsClick: () -> Unit = {},
     onManageClick: () -> Unit = {},
-    viewModel: PostsViewModel = viewModel()
+    viewModel: PostsViewModel = viewModel(),
+    onFabClick: () -> Unit = {}
 ) {
     val posts by viewModel.posts.collectAsState()
 
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Black)
-            .padding(16.dp)
+            .statusBarsPadding()
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Black)
+                .padding(16.dp)
         ) {
-            Text("COEP NEWS", color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-            Row {
-                IconButton(onClick = { /* search */ }) {
-                    Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = null,
-                        tint = Color.White
-                    )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text("COEP NEWS", color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Row {
+                    IconButton(onClick = { /* search */ }) {
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = null,
+                            tint = Color.White
+                        )
+                    }
+                    IconButton(onClick = {
+                        navController.navigate("profile")
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.Person,
+                            contentDescription = "Profile",
+                            tint = Color.White
+                        )
+                    }
                 }
-                IconButton(onClick = {
-                    navController.navigate("profile")
-                }) {
-                    Icon(
-                        imageVector = Icons.Default.Person,
-                        contentDescription = "Profile",
-                        tint = Color.White
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            MetricsRow(
+                publishedToday,
+                totalPosts,
+                drafts,
+                pending,
+                newComments,
+                spam
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Button(
+                    onClick = onAnalyticsClick,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.DarkGray,
+                        contentColor = Color.White
                     )
+                ) {
+                    Text("ANALYTICS", fontWeight = FontWeight.Bold)
+                }
+                Button(
+                    onClick = onManageClick,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.DarkGray,
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text("MANAGE", fontWeight = FontWeight.Bold)
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            LazyColumn {
+                items(posts) { post ->
+                    WordPressPostItem(post)
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        MetricsRow(
-            publishedToday,
-            totalPosts,
-            drafts,
-            pending,
-            newComments,
-            spam
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
+        // floating button to create new post
+        FloatingActionButton(
+            onClick = onFabClick,
+            containerColor = Color.Blue,
+            contentColor = Color.White,
+            shape = RoundedCornerShape(50),
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(end = 24.dp, bottom = 32.dp)
         ) {
-            Button(
-                onClick = onAnalyticsClick,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.DarkGray,
-                    contentColor = Color.White
-                )
-            ) {
-                Text("ANALYTICS", fontWeight = FontWeight.Bold)
-            }
-            Button(
-                onClick = onManageClick,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.DarkGray,
-                    contentColor = Color.White
-                )
-            ) {
-                Text("MANAGE", fontWeight = FontWeight.Bold)
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        LazyColumn {
-            items(posts) { post ->
-                WordPressPostItem(post)
-            }
+            Icon(Icons.Default.Add, contentDescription = "Add")
         }
     }
+
+
 }
 
 @Composable
@@ -217,6 +241,7 @@ fun WordPressPostItem(post: WordPressPost, viewModel: PostsViewModel = viewModel
             maxLines = 3
         )
     }
+    Spacer(modifier = Modifier.height(10.dp))
 }
 
 
